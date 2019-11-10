@@ -78,6 +78,7 @@
     <ClCompile Include="Src\freertos.c" />
     <ClCompile Include="Src\lcd_hd44780_i2c.c" />
     <ClCompile Include="Src\MY_DHT22.c" />
+    <ClCompile Include="Src\stm32f4xx_hal_timebase_tim.c" />
     <ClCompile Include="Src\stm32f4xx_it.c" />
     <ClCompile Include="Src\stm32f4xx_hal_msp.c" />
     <ClCompile Include="Src\main.c" />

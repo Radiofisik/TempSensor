@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
+#include "stdio.h"
 #include "main.h"
 #include "cmsis_os.h"
 
@@ -467,7 +468,7 @@ static void MX_GPIO_Init(void)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const * argument)
 {
-   /* USER CODE BEGIN StartDefaultTask */
+  /* USER CODE BEGIN 5 */
 	lcdInit(&hi2c1, (uint8_t)0x27, (uint8_t)4, (uint8_t)20);
     
 	// Print text and home position 0,0
@@ -481,7 +482,7 @@ void StartDefaultTask(void const * argument)
 
 	float TempC, Humidity;
 	char uartData[50];
-	
+    
 	for (;;) {
 		lcdSetCursorPosition(0, 1);
 		if (DHT22_GetTemp_Humidity(&TempC, &Humidity) == 1)
@@ -494,10 +495,37 @@ void StartDefaultTask(void const * argument)
 			sprintf(uartData, "\r\nCRC Error!\r\n");
 			lcdPrintStr((uint8_t *)uartData, strlen(uartData));
 		}
-		
+        
 		vTaskDelay(1000);
 	}
-  /* USER CODE END StartDefaultTask */ 
+
+  /* Infinite loop */
+//  for(;;)
+//  {
+//    osDelay(1);
+//  }
+  /* USER CODE END 5 */ 
+}
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM1 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM1) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
 }
 
 /**

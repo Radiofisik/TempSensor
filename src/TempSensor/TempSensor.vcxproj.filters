@@ -405,6 +405,9 @@
     <ClCompile Include="Src\MY_DHT22.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\stm32f4xx_hal_timebase_tim.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\MY_DHT22.h">
