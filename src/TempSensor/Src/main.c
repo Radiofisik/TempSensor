@@ -19,9 +19,9 @@
 /* USER CODE END Header */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stdio.h"
 #include "main.h"
 #include "cmsis_os.h"
+#include "stdio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -113,7 +113,7 @@ int main(void)
   MX_SPI1_Init();
   MX_USB_OTG_FS_HCD_Init();
   /* USER CODE BEGIN 2 */
-	DHT22_Init(GPIOE, GPIO_PIN_6);
+
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -381,7 +381,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, CS_I2C_SPI_Pin|GPIO_PIN_6, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(CS_I2C_SPI_GPIO_Port, CS_I2C_SPI_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(OTG_FS_PowerSwitchOn_GPIO_Port, OTG_FS_PowerSwitchOn_Pin, GPIO_PIN_SET);
@@ -390,11 +390,17 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin|LD6_Pin 
                           |Audio_RST_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : CS_I2C_SPI_Pin PE6 */
-  GPIO_InitStruct.Pin = CS_I2C_SPI_Pin|GPIO_PIN_6;
+  /*Configure GPIO pin : CS_I2C_SPI_Pin */
+  GPIO_InitStruct.Pin = CS_I2C_SPI_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(CS_I2C_SPI_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PE6 */
+  GPIO_InitStruct.Pin = GPIO_PIN_6;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
 
   /*Configure GPIO pin : OTG_FS_PowerSwitchOn_Pin */
@@ -481,19 +487,20 @@ void StartDefaultTask(void const * argument)
 	lcdPrintStr((uint8_t*)"World!", 6);
 
 	float TempC, Humidity;
-	char uartData[50];
-    
+	char tempString[20];
+	DHT22_Init(GPIOE, GPIO_PIN_6);
 	for (;;) {
 		lcdSetCursorPosition(0, 1);
 		if (DHT22_GetTemp_Humidity(&TempC, &Humidity) == 1)
 		{
-			sprintf(uartData, "\r\nTemp (C) =\t %.1f\r\nHumidity (%%) =\t %.1f%%\r\n", TempC, Humidity);
-			lcdPrintStr((uint8_t *)uartData, strlen(uartData));
+			sprintf(tempString, "T=%.2f Rh=%.2f", TempC, Humidity);
+			//	sprintf(tempString, "T=28.00 Rh=46.80");
+			lcdPrintStr((uint8_t *)tempString, strlen(tempString));
 		}
 		else
 		{
-			sprintf(uartData, "\r\nCRC Error!\r\n");
-			lcdPrintStr((uint8_t *)uartData, strlen(uartData));
+			sprintf(tempString, "CRC Error!");
+			lcdPrintStr((uint8_t *)tempString, strlen(tempString));
 		}
         
 		vTaskDelay(1000);

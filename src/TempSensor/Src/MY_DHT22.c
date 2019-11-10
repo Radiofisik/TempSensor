@@ -44,8 +44,6 @@ void DHT22_Init(GPIO_TypeDef* DataPort, uint16_t DataPin)
 			break;
 		}
 	}
-
-	
 }
 //Change pin mode
 static void ONE_WIRE_PinMode(OnePinMode_Typedef mode)
@@ -84,7 +82,7 @@ static bool ONE_WIRE_Pin_Read(void)
 static void DelayMicroSeconds(uint32_t uSec)
 {
 	uint32_t uSecVar = uSec;
-	uSecVar = uSecVar* ((SystemCoreClock/1000000)/3);
+	uSecVar = uSecVar* ((SystemCoreClock/1000000/7));
 	while(uSecVar--);
 }
 
@@ -99,8 +97,8 @@ static void DHT22_StartAcquisition(void)
 	DelayMicroSeconds(500);
 	//Bring pin HIGH
 	ONE_WIRE_Pin_Write(1);
-	//30 uSec delay
-	DelayMicroSeconds(30);
+	//20 uSec delay
+	DelayMicroSeconds(20);
 	//Set pin as input
 	ONE_WIRE_PinMode(ONE_INPUT);
 }
@@ -109,30 +107,32 @@ static void DHT22_ReadRaw(uint8_t *data)
 {
 	uint32_t rawBits = 0UL;
 	uint8_t checksumBits=0;
+	uint32_t delay = 40;
 	
-	DelayMicroSeconds(40);
-	while(!ONE_WIRE_Pin_Read());
-	while(ONE_WIRE_Pin_Read());
+	DelayMicroSeconds(delay);
+	while(!ONE_WIRE_Pin_Read()); //wait1
+	while(ONE_WIRE_Pin_Read()); //wait0
 	for(int8_t i=31; i>=0; i--)
 	{
-		while(!ONE_WIRE_Pin_Read());
-		DelayMicroSeconds(40);
-		if(ONE_WIRE_Pin_Read())
+		while (ONE_WIRE_Pin_Read()); //wait0
+		while(!ONE_WIRE_Pin_Read()); //wait1
+		DelayMicroSeconds(delay);
+		if (ONE_WIRE_Pin_Read())
 		{
 			rawBits |= (1UL << i);
 		}
-		while(ONE_WIRE_Pin_Read());
+		
 	}
 	
 	for(int8_t i=7; i>=0; i--)
 	{
+		while (ONE_WIRE_Pin_Read()); //wait0
 		while(!ONE_WIRE_Pin_Read());
-		DelayMicroSeconds(40);
+		DelayMicroSeconds(delay);
 		if(ONE_WIRE_Pin_Read())
 		{
 			checksumBits |= (1UL << i);
 		}
-		while(ONE_WIRE_Pin_Read());
 	}
 	
 	
@@ -170,4 +170,3 @@ bool DHT22_GetTemp_Humidity(float *Temp, float *Humidity)
 	}
 	return 0;
 }
-

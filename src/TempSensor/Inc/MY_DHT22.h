@@ -48,4 +48,3 @@ static void DHT22_ReadRaw(uint8_t *data);
 
 //Get Temperature and Humidity data
 bool DHT22_GetTemp_Humidity(float *Temp, float *Humidity);
-

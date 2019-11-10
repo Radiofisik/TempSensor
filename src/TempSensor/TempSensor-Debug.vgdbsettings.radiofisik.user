@@ -9,6 +9,16 @@
       <Syscalls />
       <CXXCatchpoints />
     </CatchpointConfiguration>
+    <LiveWatches>
+      <LiveWatch>
+        <Expression>data</Expression>
+        <Settings xsi:type="GraphVisualWatchSettings">
+          <Type>UInt8</Type>
+          <ElementCount>4</ElementCount>
+        </Settings>
+        <VisualizerID>com.sysprogs.visualwatch.graph</VisualizerID>
+      </LiveWatch>
+    </LiveWatches>
     <MaskInterruptsWhileStepping>false</MaskInterruptsWhileStepping>
     <MemoryWindowPreferences />
     <FavoriteEmbeddedRegisters />

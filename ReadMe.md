@@ -84,8 +84,6 @@ void StartDefaultTask(void const * argument)
 
 ##  DHT22
 
-определимся с портом к которым будем подключать DHT22 пусть это будет PE6. в cube настроим этот порт как outpt. Добавим в проект файлы библиотеки [библиотеки](https://github.com/MYaqoobEmbedded/STM32-Tutorials/tree/master/Tutorial 25 - DHT22 Temperature Sensor). 
-
-
+определимся с портом к которым будем подключать DHT22 пусть это будет PE6. в cube настроим этот порт как input. Добавим в проект файлы библиотеки [библиотеки](https://github.com/MYaqoobEmbedded/STM32-Tutorials/tree/master/Tutorial 25 - DHT22 Temperature Sensor). 
 
 > To be continued...
