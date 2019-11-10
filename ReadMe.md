@@ -55,3 +55,31 @@ description: использование RTOS, CubeMx, VisualGDB
 
 ![vc4](pict/vc4.png)
 
+Добавим в папки и подключим в проект файлы библиотеки для LCD.
+
+изменим код задачи по умолчанию
+
+```c++
+void StartDefaultTask(void const * argument)
+{
+   /* USER CODE BEGIN StartDefaultTask */
+	lcdInit(&hi2c1, (uint8_t)0x27, (uint8_t)4, (uint8_t)20);
+    
+	// Print text and home position 0,0
+	lcdPrintStr((uint8_t*)"Hello,", 6);
+    
+	// Set cursor at zero position of line 3
+	lcdSetCursorPosition(0, 2);
+
+	// Print text at cursor position
+	lcdPrintStr((uint8_t*)"World!", 6);
+
+	for (;;) {
+		vTaskDelay(1000);
+	}
+}
+```
+
+После запуска получим долгожданный hello world на экране
+
+> To be continued...

@@ -466,12 +466,21 @@ static void MX_GPIO_Init(void)
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void const * argument)
 {
-  /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
-  }
+   /* USER CODE BEGIN StartDefaultTask */
+	lcdInit(&hi2c1, (uint8_t)0x27, (uint8_t)4, (uint8_t)20);
+    
+	// Print text and home position 0,0
+	lcdPrintStr((uint8_t*)"Hello,", 6);
+    
+	// Set cursor at zero position of line 3
+	lcdSetCursorPosition(0, 2);
+
+	// Print text at cursor position
+	lcdPrintStr((uint8_t*)"World!", 6);
+
+	for (;;) {
+		vTaskDelay(1000);
+	}
   /* USER CODE END 5 */ 
 }
 

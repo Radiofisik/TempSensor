@@ -399,5 +399,8 @@
     <None Include="stm32.xml">
       <Filter>VisualGDB settings</Filter>
     </None>
+    <ClCompile Include="Src\lcd_hd44780_i2c.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
