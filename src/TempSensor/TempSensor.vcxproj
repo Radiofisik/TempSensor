@@ -77,6 +77,7 @@
   <ItemGroup>
     <ClCompile Include="Src\freertos.c" />
     <ClCompile Include="Src\lcd_hd44780_i2c.c" />
+    <ClCompile Include="Src\MY_DHT22.c" />
     <ClCompile Include="Src\stm32f4xx_it.c" />
     <ClCompile Include="Src\stm32f4xx_hal_msp.c" />
     <ClCompile Include="Src\main.c" />
@@ -116,6 +117,8 @@
     <None Include="stm32.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32F4xxxx\StartupFiles\startup_stm32f407xx.c" />
     <ClInclude Include="Inc\FreeRTOSConfig.h" />
+    <ClInclude Include="Inc\lcd_hd44780_i2c.h" />
+    <ClInclude Include="Inc\MY_DHT22.h" />
     <ClInclude Include="Inc\stm32f4xx_it.h" />
     <ClInclude Include="Inc\stm32f4xx_hal_conf.h" />
     <ClInclude Include="Inc\main.h" />

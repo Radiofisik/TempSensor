@@ -402,5 +402,16 @@
     <ClCompile Include="Src\lcd_hd44780_i2c.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Src\MY_DHT22.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Inc\MY_DHT22.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\lcd_hd44780_i2c.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
