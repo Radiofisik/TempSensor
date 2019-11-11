@@ -1,0 +1,6 @@
+﻿  main.c
+  Linking VisualGDB/Release/TempSensor...
+  ------------------- Memory utilization report -------------------
+  Used FLASH: 25KB out of 1024KB (2%) [+352]
+  Used SRAM: 17KB out of 128KB (13%)
+  Used CCMRAM: 0 bytes out of 64KB (0%)

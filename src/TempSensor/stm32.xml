@@ -25,7 +25,7 @@
       </KeyValue>
       <KeyValue>
         <Key>com.sysprogs.toolchainoptions.arm.libctype</Key>
-        <Value>--specs=nano.specs -u _printf_float</Value>
+        <Value>--specs=nano.specs</Value>
       </KeyValue>
       <KeyValue>
         <Key>com.sysprogs.toolchainoptions.arm.libnosys</Key>
@@ -48,7 +48,7 @@
     <AllDependencies>
       <ProjectDependency>
         <RelativePath>TempSensor.gpdsc</RelativePath>
-        <Timestamp>132178573136839646</Timestamp>
+        <Timestamp>132178838775782432</Timestamp>
       </ProjectDependency>
     </AllDependencies>
     <RootDirectory>
@@ -401,6 +401,9 @@
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Src\stm32f4xx_hal_msp.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Src\stm32f4xx_hal_timebase_tim.c</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Src\main.c</RelativePath>

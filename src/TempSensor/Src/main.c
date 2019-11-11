@@ -25,8 +25,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "Display.h"
 #include "MY_DHT22.h"
-#include "lcd_hd44780_i2c.h"
+//#include "Sensor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,7 +57,10 @@ HCD_HandleTypeDef hhcd_USB_OTG_FS;
 
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
-
+osThreadId displayTaskHandle;
+osThreadId sensorTaskHandle;
+float Temp = 10;
+float Humidity = 10;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -70,7 +74,6 @@ static void MX_USB_OTG_FS_HCD_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -135,9 +138,24 @@ int main(void)
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+	defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
+	
+//	SensorStruct ss;
+//	ss.humidity = &Humidity;
+//	ss.temperature = &Temp;
+//	osThreadDef(sensorTask, StartSensorTask, osPriorityNormal, 0, 128);
+//	sensorTaskHandle = osThreadCreate(osThread(sensorTask), (void*) &ss);
+	
+	DisplayStruct ds;
+	ds.i2c = &hi2c1;
+	ds.humidity = &Humidity;
+	ds.temperature = &Temp;
+	osThreadDef(displayTask, StartDisplayTask, osPriorityNormal, 0, 128);
+	displayTaskHandle = osThreadCreate(osThread(displayTask), (void*) &ds);
+	
+	
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
@@ -458,10 +476,10 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(MEMS_INT2_GPIO_Port, &GPIO_InitStruct);
-
 }
 
 /* USER CODE BEGIN 4 */
+
 
 /* USER CODE END 4 */
 
@@ -472,40 +490,22 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
+
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
-	lcdInit(&hi2c1, (uint8_t)0x27, (uint8_t)4, (uint8_t)20);
-    
-	// Print text and home position 0,0
-	lcdPrintStr((uint8_t*)"Hello,", 6);
-    
-	// Set cursor at zero position of line 3
-	lcdSetCursorPosition(0, 2);
-
-	// Print text at cursor position
-	lcdPrintStr((uint8_t*)"World!", 6);
-
-	float TempC, Humidity;
-	char tempString[20];
 	DHT22_Init(GPIOE, GPIO_PIN_6);
-	for (;;) {
-		lcdSetCursorPosition(0, 1);
-		if (DHT22_GetTemp_Humidity(&TempC, &Humidity) == 1)
-		{
-			sprintf(tempString, "T=%.2f Rh=%.2f", TempC, Humidity);
-			//	sprintf(tempString, "T=28.00 Rh=46.80");
-			lcdPrintStr((uint8_t *)tempString, strlen(tempString));
-		}
-		else
-		{
-			sprintf(tempString, "CRC Error!");
-			lcdPrintStr((uint8_t *)tempString, strlen(tempString));
-		}
-        
+	for(;;) {
+				if (DHT22_GetTemp_Humidity(&Temp, &Humidity) == 1)
+				{
+					
+				}
+				else
+				{
+					Temp = 0;
+				}
 		vTaskDelay(1000);
 	}
-
   /* Infinite loop */
 //  for(;;)
 //  {
