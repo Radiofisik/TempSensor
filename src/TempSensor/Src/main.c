@@ -21,13 +21,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
-#include "stdio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Display.h"
-#include "MY_DHT22.h"
-//#include "Sensor.h"
+//#include "MY_DHT22.h"
+#include "Sensor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -129,21 +128,21 @@ int main(void)
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
   osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
-	defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
 	
-//	SensorStruct ss;
-//	ss.humidity = &Humidity;
-//	ss.temperature = &Temp;
-//	osThreadDef(sensorTask, StartSensorTask, osPriorityNormal, 0, 128);
-//	sensorTaskHandle = osThreadCreate(osThread(sensorTask), (void*) &ss);
+
+	ss.humidity = &Humidity;
+	ss.temperature = &Temp;
+	osThreadDef(sensorTask, StartSensorTask, osPriorityNormal, 0, 256);
+	sensorTaskHandle = osThreadCreate(osThread(sensorTask), (void*) &ss);
 	
-	DisplayStruct ds;
+
 	ds.i2c = &hi2c1;
 	ds.humidity = &Humidity;
 	ds.temperature = &Temp;
-	osThreadDef(displayTask, StartDisplayTask, osPriorityNormal, 0, 128);
+	osThreadDef(displayTask, StartDisplayTask, osPriorityNormal, 0, 256);
 	displayTaskHandle = osThreadCreate(osThread(displayTask), (void*) &ds);
 	
 	
@@ -394,6 +393,7 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(MEMS_INT2_GPIO_Port, &GPIO_InitStruct);
+
 }
 
 /* USER CODE BEGIN 4 */
@@ -408,27 +408,14 @@ static void MX_GPIO_Init(void)
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
-	DHT22_Init(GPIOE, GPIO_PIN_6);
-	for(;;) {
-				if (DHT22_GetTemp_Humidity(&Temp, &Humidity) == 1)
-				{
-					
-				}
-				else
-				{
-					Temp = 0;
-				}
-		vTaskDelay(1000);
-	}
   /* Infinite loop */
-//  for(;;)
-//  {
-//    osDelay(1);
-//  }
+  for(;;)
+  {
+    osDelay(1);
+  }
   /* USER CODE END 5 */ 
 }
 

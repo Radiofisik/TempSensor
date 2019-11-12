@@ -45,14 +45,13 @@ static void PrintHumidity(float humidity)
 void StartDisplayTask(void const * argument)
 {
 	DisplayStruct* ds = (DisplayStruct *) argument;
-	float * temp = ds->temperature;
-	float * humidity = ds->humidity;
+
 	DisplayInit(ds->i2c);
 	
 	for (;;)
 	{
-		PrintTemp(*temp);
-		PrintHumidity(*humidity);
+		PrintTemp(*ds->temperature);
+		PrintHumidity(*ds->humidity);
 		vTaskDelay(1000);
 	}
 }
