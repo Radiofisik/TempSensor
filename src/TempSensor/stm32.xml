@@ -48,7 +48,7 @@
     <AllDependencies>
       <ProjectDependency>
         <RelativePath>TempSensor.gpdsc</RelativePath>
-        <Timestamp>132178838775782432</Timestamp>
+        <Timestamp>132180542467818439</Timestamp>
       </ProjectDependency>
     </AllDependencies>
     <RootDirectory>
@@ -71,7 +71,7 @@
               <RelativePath>Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h</RelativePath>
             </VirtualFileSnapshot>
             <VirtualFileSnapshot>
-              <RelativePath>Drivers\CMSIS\Device\ST\STM32F4xx\Source\Templates\system_stm32f4xx.c</RelativePath>
+              <RelativePath>Src\system_stm32f4xx.c</RelativePath>
             </VirtualFileSnapshot>
           </Files>
         </VirtualDirectorySnapshot>
