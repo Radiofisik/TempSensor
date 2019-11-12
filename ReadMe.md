@@ -39,6 +39,8 @@ description: использование RTOS, CubeMx, VisualGDB
 
 ![generate](pict/generate.png)
 
+> при использовании некоторых функций рекомендуется увеличить Mininum Heap Size и Minimum Stack Size раза в два.
+
 и жмем generate. Далее запускаем Visual Studio 2017. создаем проект в той же папке
 
 ![vc1](pict/vc1.png)
@@ -84,6 +86,155 @@ void StartDefaultTask(void const * argument)
 
 ##  DHT22
 
-определимся с портом к которым будем подключать DHT22 пусть это будет PE6. в cube настроим этот порт как input. Добавим в проект файлы библиотеки [библиотеки](https://github.com/MYaqoobEmbedded/STM32-Tutorials/tree/master/Tutorial 25 - DHT22 Temperature Sensor). 
+определимся с портом к которым будем подключать DHT22 пусть это будет PE6. в cube настроим этот порт как input. Добавим в проект файлы библиотеки [библиотеки](https://github.com/MYaqoobEmbedded/STM32-Tutorials/tree/master/Tutorial 25 - DHT22 Temperature Sensor).  Как выяснилось в библиотеки есть баги, в версии проекта они поправлены. После подключения библиотеки для считывания показаний достаточно испоьзовать код
 
-> To be continued...
+```c
+float temp, humid;
+DHT22_Init(GPIOE, GPIO_PIN_6);
+DHT22_GetTemp_Humidity(&tmp, &humid);
+```
+
+## Free RTOS
+
+Технологии достигли тех высот когда даже на микроконтроллере может быть запущена операционная система. Одной из функций  ОС является распределение времени процессора между задачами - по сути реализация многозадачности. Программировать так намного удобнее. Для примера дажа в простейшем устройстве - термометре можно создать две задачи. Одна будет опрашивать датчик, вторая выводить информацию на дисплей. Для передачи данных между задачами можно использовать глобальные переменные - через слово `extern` или передавать как параметр задачи.
+
+Объявим переменые
+
+```c
+osThreadId displayTaskHandle;
+osThreadId sensorTaskHandle;
+float Temp = 10;
+float Humidity = 10;
+
+DisplayStruct ds;
+SensorStruct ss;
+```
+
+Запустим задачи
+
+```c
+ss.humidity = &Humidity;
+ss.temperature = &Temp;
+osThreadDef(sensorTask, StartSensorTask, osPriorityNormal, 0, 256);
+sensorTaskHandle = osThreadCreate(osThread(sensorTask), (void*) &ss);
+
+
+ds.i2c = &hi2c1;
+ds.humidity = &Humidity;
+ds.temperature = &Temp;
+osThreadDef(displayTask, StartDisplayTask, osPriorityNormal, 0, 256);
+displayTaskHandle = osThreadCreate(osThread(displayTask), (void*) &ds);
+```
+
+Реализуем модуль дисплея. Для начала в заголовочном файле объявим функцию задачи и структуру для передачи данных
+
+```c
+typedef struct
+{
+	I2C_HandleTypeDef * i2c;
+	float * temperature;
+	float * humidity;
+}DisplayStruct;
+
+static void DisplayInit(I2C_HandleTypeDef * i2c);
+
+static void PrintHumidity(float humidity);
+
+static void PrintTemp(float temp);
+
+void StartDisplayTask(void const * argument);
+```
+
+Реализуем эти функции, учитывая тот факт что используемая библиотека без дополнительных опций линковки не поддерживает sprintf для float
+
+```c
+#include "Display.h"
+
+static void DisplayInit(I2C_HandleTypeDef * i2c)
+{
+	lcdInit(i2c, (uint8_t)0x27, (uint8_t)4, (uint8_t)20);
+    
+	// Print text and home position 0,0
+	char * initString = "Temperature sensor";
+	
+	lcdPrintStr((uint8_t*)initString, strlen(initString));
+}
+
+static void ToString(char* str, float num)
+{
+	char *tmpSign = (num < 0) ? "-" : "";
+	float tmpVal = (num < 0) ? -num : num;
+	int tmpInt1 = tmpVal;                  
+	float tmpFrac = tmpVal - tmpInt1;      
+	int tmpInt2 = trunc(tmpFrac * 10); 
+	sprintf(str, "%s%d.%01d", tmpSign, tmpInt1, tmpInt2);
+}
+
+static void PrintTemp(float temp)
+{
+	char numstr[5];
+	char str[20];
+	ToString(numstr, temp);
+	sprintf(str, "Temperature = %s", numstr);
+	
+	lcdSetCursorPosition(0, 1);	
+	lcdPrintStr((uint8_t *)str, strlen(str));
+}
+
+static void PrintHumidity(float humidity)
+{
+	char numstr[5];
+	char str[20];
+	ToString(numstr, humidity);
+	sprintf(str, "Humidity = %s", numstr);
+				
+	lcdSetCursorPosition(0, 2);
+	lcdPrintStr((uint8_t *)str, strlen(str));
+}
+
+void StartDisplayTask(void const * argument)
+{
+	DisplayStruct* ds = (DisplayStruct *) argument;
+
+	DisplayInit(ds->i2c);
+	
+	for (;;)
+	{
+		PrintTemp(*ds->temperature);
+		PrintHumidity(*ds->humidity);
+		vTaskDelay(1000);
+	}
+}
+```
+
+Аналогично с модулем для датчика
+
+```c
+typedef struct
+{
+	float * temperature;
+	float * humidity;
+}SensorStruct;
+
+void StartSensorTask(void const * argument);
+```
+
+```c
+void StartSensorTask(void const * argument)
+{
+	SensorStruct * ss = (SensorStruct *) argument;
+	
+	DHT22_Init(GPIOE, GPIO_PIN_6);
+	
+	for (;;) {
+		
+		if (DHT22_GetTemp_Humidity(ss->temperature, ss->humidity) == 0)
+		{
+			ss->temperature = 0;
+		}
+		vTaskDelay(1000);
+	}
+}
+```
+
+> Репозиторий проекта https://github.com/Radiofisik/TempSensor
