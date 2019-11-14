@@ -92,9 +92,9 @@
       <InterfaceID>stlink-v2</InterfaceID>
       <InterfaceSerialNumber>6&amp;1315F175&amp;0&amp;3</InterfaceSerialNumber>
       <Configuration xsi:type="com.visualgdb.edp.openocd.settings">
-        <CommandLine>-f interface/stlink-v2.cfg -f target/stm32f4x.cfg -c init -c "reset init"</CommandLine>
+        <CommandLine>-f interface/stlink-v2.cfg -c "transport select hla_swd" -f target/stm32f4x.cfg -c init -c "reset init"</CommandLine>
         <ExtraParameters>
-          <Frequency xsi:nil="true" />
+          <Frequency>1800</Frequency>
           <BoostedFrequency xsi:nil="true" />
           <ConnectUnderReset>false</ConnectUnderReset>
         </ExtraParameters>
@@ -121,7 +121,36 @@
     <ValidateEndOfStackAddress>true</ValidateEndOfStackAddress>
     <StopAtEntryPoint>false</StopAtEntryPoint>
     <EnableVirtualHalts>false</EnableVirtualHalts>
-    <DynamicAnalysisSettings />
+    <DynamicAnalysisSettings>
+      <StackVerifier>
+        <VerifyStackBounds>false</VerifyStackBounds>
+        <AutoStepOutOfHook>true</AutoStepOutOfHook>
+        <StackLimitControlledByUser>false</StackLimitControlledByUser>
+        <ExplicitSizeLimit>0</ExplicitSizeLimit>
+        <ExplicitStackBase>0</ExplicitStackBase>
+        <Mode>Auto</Mode>
+      </StackVerifier>
+      <RealTimeWatch>
+        <SupportRTOSAnalysis>false</SupportRTOSAnalysis>
+        <SupportFunctionInstrumentation>false</SupportFunctionInstrumentation>
+        <MeasureOverhead>true</MeasureOverhead>
+      </RealTimeWatch>
+      <InstrumentedFunctions>
+        <InstrumentNewFunctions>true</InstrumentNewFunctions>
+        <ExplicitEndOfFLASH>0</ExplicitEndOfFLASH>
+        <ExplicitEndOfRAM>0</ExplicitEndOfRAM>
+      </InstrumentedFunctions>
+      <RTOSFeatures>
+        <RTOSFeatureSetting>
+          <FeatureID>com.sysprogs.analysis.thread.timing</FeatureID>
+          <Enabled>true</Enabled>
+        </RTOSFeatureSetting>
+        <RTOSFeatureSetting>
+          <FeatureID>com.sysprogs.analysis.freertos.queues</FeatureID>
+          <Enabled>true</Enabled>
+        </RTOSFeatureSetting>
+      </RTOSFeatures>
+    </DynamicAnalysisSettings>
     <EndOfStackSymbol>_estack</EndOfStackSymbol>
     <TimestampProviderTicksPerSecond>0</TimestampProviderTicksPerSecond>
     <KeepConsoleAfterExit>false</KeepConsoleAfterExit>

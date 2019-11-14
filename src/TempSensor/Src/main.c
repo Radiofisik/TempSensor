@@ -27,6 +27,7 @@
 #include "Display.h"
 //#include "MY_DHT22.h"
 #include "Sensor.h"
+#include "RTC.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,8 +46,11 @@
 
 /* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
+I2C_HandleTypeDef hi2c2;
 DMA_HandleTypeDef hdma_i2c1_rx;
 DMA_HandleTypeDef hdma_i2c1_tx;
+DMA_HandleTypeDef hdma_i2c2_rx;
+DMA_HandleTypeDef hdma_i2c2_tx;
 
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
@@ -54,6 +58,8 @@ osThreadId displayTaskHandle;
 osThreadId sensorTaskHandle;
 float Temp = 10;
 float Humidity = 10;
+
+char Time[20]="init";
 
 DisplayStruct ds;
 SensorStruct ss;
@@ -64,6 +70,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_I2C2_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -105,6 +112,7 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_I2C1_Init();
+  MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -127,7 +135,7 @@ int main(void)
 
   /* Create the thread(s) */
   /* definition and creation of defaultTask */
-  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 256);
   defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -142,6 +150,7 @@ int main(void)
 	ds.i2c = &hi2c1;
 	ds.humidity = &Humidity;
 	ds.temperature = &Temp;
+	ds.time = Time;
 	osThreadDef(displayTask, StartDisplayTask, osPriorityNormal, 0, 256);
 	displayTaskHandle = osThreadCreate(osThread(displayTask), (void*) &ds);
 	
@@ -241,6 +250,40 @@ static void MX_I2C1_Init(void)
 
 }
 
+/**
+  * @brief I2C2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C2_Init(void)
+{
+
+  /* USER CODE BEGIN I2C2_Init 0 */
+
+  /* USER CODE END I2C2_Init 0 */
+
+  /* USER CODE BEGIN I2C2_Init 1 */
+
+  /* USER CODE END I2C2_Init 1 */
+  hi2c2.Instance = I2C2;
+  hi2c2.Init.ClockSpeed = 100000;
+  hi2c2.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c2.Init.OwnAddress1 = 0;
+  hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c2.Init.OwnAddress2 = 0;
+  hi2c2.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c2.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C2_Init 2 */
+
+  /* USER CODE END I2C2_Init 2 */
+
+}
+
 /** 
   * Enable DMA controller clock
   */
@@ -254,9 +297,15 @@ static void MX_DMA_Init(void)
   /* DMA1_Stream0_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
+  /* DMA1_Stream2_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream2_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream2_IRQn);
   /* DMA1_Stream6_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream6_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream6_IRQn);
+  /* DMA1_Stream7_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream7_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream7_IRQn);
 
 }
 
@@ -343,14 +392,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(BOOT1_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : CLK_IN_Pin */
-  GPIO_InitStruct.Pin = CLK_IN_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF5_SPI2;
-  HAL_GPIO_Init(CLK_IN_GPIO_Port, &GPIO_InitStruct);
-
   /*Configure GPIO pins : LD4_Pin LD3_Pin LD5_Pin LD6_Pin 
                            Audio_RST_Pin */
   GPIO_InitStruct.Pin = LD4_Pin|LD3_Pin|LD5_Pin|LD6_Pin 
@@ -360,13 +401,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : I2S3_MCK_Pin I2S3_SCK_Pin I2S3_SD_Pin */
-  GPIO_InitStruct.Pin = I2S3_MCK_Pin|I2S3_SCK_Pin|I2S3_SD_Pin;
+  /*Configure GPIO pin : I2S3_MCK_Pin */
+  GPIO_InitStruct.Pin = I2S3_MCK_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  HAL_GPIO_Init(I2S3_MCK_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : VBUS_FS_Pin */
   GPIO_InitStruct.Pin = VBUS_FS_Pin;
@@ -411,10 +452,33 @@ static void MX_GPIO_Init(void)
 void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
+	osDelay(1000);
+	uint8_t dc3231Addr = (uint8_t) 0xD0;
+	DS3231_sendData(hi2c2, dc3231Addr);    //Передадим адрес устройству
+	   while(HAL_I2C_GetState(&hi2c2) != HAL_I2C_STATE_READY) {
+	}
+	//Read
+	//I2C_ReadCalendarData(hi2c2, dc3231Addr);    //—читаем 7 байт с устройства
+
+	
+//	setHour(22);
+//	setMinutes(50);
+//	setSeconds(00);
+//	DS3231_setDate(hi2c2, dc3231Addr);  //call to update set data
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+	  DS3231_sendData(hi2c2, dc3231Addr);   //Передадим адрес устройству
+		while(HAL_I2C_GetState(&hi2c2) != HAL_I2C_STATE_READY) {
+	  }
+	  //Read
+	  I2C_ReadCalendarData(hi2c2, dc3231Addr);   //—читаем 7 байт с устройства
+//	  char seconds[3] =;
+//	  char * minutes = readMinutes();
+//	  char * hours = readHours();
+	  
+	  sprintf(Time, "time = %s:%s:%s", readHours(), readMinutes(), readSeconds());
+    osDelay(1000);
   }
   /* USER CODE END 5 */ 
 }

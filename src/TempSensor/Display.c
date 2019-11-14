@@ -42,6 +42,12 @@ static void PrintHumidity(float humidity)
 	lcdPrintStr((uint8_t *)str, strlen(str));
 }
 
+static void PrintTime(char * time)
+{
+	lcdSetCursorPosition(0, 3);
+	lcdPrintStr((uint8_t *)time, strlen(time));
+}
+
 void StartDisplayTask(void const * argument)
 {
 	DisplayStruct* ds = (DisplayStruct *) argument;
@@ -52,6 +58,7 @@ void StartDisplayTask(void const * argument)
 	{
 		PrintTemp(*ds->temperature);
 		PrintHumidity(*ds->humidity);
+		PrintTime(ds->time);
 		vTaskDelay(1000);
 	}
 }

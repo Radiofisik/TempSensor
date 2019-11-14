@@ -9,6 +9,7 @@ typedef struct
 	I2C_HandleTypeDef * i2c;
 	float * temperature;
 	float * humidity;
+	char* time;
 }DisplayStruct;
 
 static void DisplayInit(I2C_HandleTypeDef * i2c);
