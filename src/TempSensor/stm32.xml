@@ -57,7 +57,7 @@
     <AllDependencies>
       <ProjectDependency>
         <RelativePath>TempSensor.gpdsc</RelativePath>
-        <Timestamp>132190480017105109</Timestamp>
+        <Timestamp>132190996817129110</Timestamp>
       </ProjectDependency>
     </AllDependencies>
     <RootDirectory>
@@ -368,7 +368,25 @@
       </Subdirectories>
       <Files>
         <VirtualFileSnapshot>
+          <RelativePath>Inc\gpio.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Inc\dma.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
           <RelativePath>Inc\FreeRTOSConfig.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Inc\i2c.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Inc\spi.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Inc\sys.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Inc\usart.h</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Inc\stm32f4xx_it.h</RelativePath>
@@ -380,16 +398,34 @@
           <RelativePath>Inc\main.h</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
+          <RelativePath>Src\gpio.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Src\dma.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
           <RelativePath>Src\freertos.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Src\i2c.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Src\spi.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Src\sys.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Src\stm32f4xx_hal_timebase_tim.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Src\usart.c</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Src\stm32f4xx_it.c</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Src\stm32f4xx_hal_msp.c</RelativePath>
-        </VirtualFileSnapshot>
-        <VirtualFileSnapshot>
-          <RelativePath>Src\stm32f4xx_hal_timebase_tim.c</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Src\main.c</RelativePath>

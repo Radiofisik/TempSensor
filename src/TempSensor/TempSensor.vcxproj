@@ -176,5 +176,17 @@
     <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_spi.c" />
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h" />
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h" />
+    <ClCompile Include="Src\gpio.c" />
+    <ClCompile Include="Src\dma.c" />
+    <ClCompile Include="Src\i2c.c" />
+    <ClCompile Include="Src\spi.c" />
+    <ClCompile Include="Src\sys.c" />
+    <ClCompile Include="Src\usart.c" />
+    <ClInclude Include="Inc\gpio.h" />
+    <ClInclude Include="Inc\dma.h" />
+    <ClInclude Include="Inc\i2c.h" />
+    <ClInclude Include="Inc\spi.h" />
+    <ClInclude Include="Inc\sys.h" />
+    <ClInclude Include="Inc\usart.h" />
   </ItemGroup>
 </Project>
