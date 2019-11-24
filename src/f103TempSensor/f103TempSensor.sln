@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.757
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "f103TempSensor", "f103TempSensor.vcxproj", "{204AC229-61DD-4297-8613-2F525CF817B9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|VisualGDB = Debug|VisualGDB
+		Release|VisualGDB = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{204AC229-61DD-4297-8613-2F525CF817B9}.Debug|VisualGDB.ActiveCfg = Debug|VisualGDB
+		{204AC229-61DD-4297-8613-2F525CF817B9}.Debug|VisualGDB.Build.0 = Debug|VisualGDB
+		{204AC229-61DD-4297-8613-2F525CF817B9}.Release|VisualGDB.ActiveCfg = Release|VisualGDB
+		{204AC229-61DD-4297-8613-2F525CF817B9}.Release|VisualGDB.Build.0 = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {782CE07C-B7D6-49E1-88C3-07F993281974}
+	EndGlobalSection
+EndGlobal

@@ -25,7 +25,7 @@ static void PrintTemp(float temp)
 	char numstr[5];
 	char str[20];
 	ToString(numstr, temp);
-	sprintf(str, "Temperature = %s", numstr);
+	sprintf(str, "T = %s", numstr);
 	
 	lcdSetCursorPosition(0, 1);	
 	lcdPrintStr((uint8_t *)str, strlen(str));
@@ -36,15 +36,21 @@ static void PrintHumidity(float humidity)
 	char numstr[5];
 	char str[20];
 	ToString(numstr, humidity);
-	sprintf(str, "Humidity = %s", numstr);
+	sprintf(str, "H = %s", numstr);
 				
-	lcdSetCursorPosition(0, 2);
+	lcdSetCursorPosition(10, 1);
 	lcdPrintStr((uint8_t *)str, strlen(str));
 }
 
 static void PrintTime(char * time)
 {
 	lcdSetCursorPosition(0, 3);
+	lcdPrintStr((uint8_t *)time, strlen(time));
+}
+
+static void PrintOutside(char * time)
+{
+	lcdSetCursorPosition(0, 2);
 	lcdPrintStr((uint8_t *)time, strlen(time));
 }
 
@@ -59,6 +65,7 @@ void StartDisplayTask(void const * argument)
 		PrintTemp(*ds->temperature);
 		PrintHumidity(*ds->humidity);
 		PrintTime(ds->time);
+		PrintOutside(ds->outside);
 		vTaskDelay(1000);
 	}
 }

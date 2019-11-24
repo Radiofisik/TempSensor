@@ -10,6 +10,7 @@ typedef struct
 	float * temperature;
 	float * humidity;
 	char* time;
+	char* outside;
 }DisplayStruct;
 
 static void DisplayInit(I2C_HandleTypeDef * i2c);

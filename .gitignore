@@ -1,2 +1,5 @@
 src/TempSensor/VisualGDB/Debug/
 src/TempSensor/.vs/
+src/f103TempSensor/VisualGDB/Release/
+src/f103TempSensor/VisualGDB/Debug/
+src/f103TempSensor/.vs/

@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "Display.h"
+#include "MY_NRF24.h"
 //#include "MY_DHT22.h"
 #include "Sensor.h"
 #include "RTC.h"
@@ -52,6 +53,12 @@ DMA_HandleTypeDef hdma_i2c1_tx;
 DMA_HandleTypeDef hdma_i2c2_rx;
 DMA_HandleTypeDef hdma_i2c2_tx;
 
+SPI_HandleTypeDef hspi1;
+DMA_HandleTypeDef hdma_spi1_rx;
+DMA_HandleTypeDef hdma_spi1_tx;
+
+UART_HandleTypeDef huart4;
+
 osThreadId defaultTaskHandle;
 /* USER CODE BEGIN PV */
 osThreadId displayTaskHandle;
@@ -70,7 +77,9 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_SPI1_Init(void);
 static void MX_I2C2_Init(void);
+static void MX_UART4_Init(void);
 void StartDefaultTask(void const * argument);
 
 /* USER CODE BEGIN PFP */
@@ -78,7 +87,9 @@ void StartDefaultTask(void const * argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint64_t RxpipeAddrs = 0x11223344AA;
+char myRxData[50];
+char myAckPayload[32] = "ok";
 /* USER CODE END 0 */
 
 /**
@@ -112,7 +123,9 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_I2C1_Init();
+  MX_SPI1_Init();
   MX_I2C2_Init();
+  MX_UART4_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -140,20 +153,18 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
 	
-
 	ss.humidity = &Humidity;
 	ss.temperature = &Temp;
 	osThreadDef(sensorTask, StartSensorTask, osPriorityNormal, 0, 256);
 	sensorTaskHandle = osThreadCreate(osThread(sensorTask), (void*) &ss);
-	
 
 	ds.i2c = &hi2c1;
 	ds.humidity = &Humidity;
 	ds.temperature = &Temp;
 	ds.time = Time;
+	ds.outside = myRxData;
 	osThreadDef(displayTask, StartDisplayTask, osPriorityNormal, 0, 256);
 	displayTaskHandle = osThreadCreate(osThread(displayTask), (void*) &ds);
-	
 	
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -284,6 +295,77 @@ static void MX_I2C2_Init(void)
 
 }
 
+/**
+  * @brief SPI1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI1_Init(void)
+{
+
+  /* USER CODE BEGIN SPI1_Init 0 */
+
+  /* USER CODE END SPI1_Init 0 */
+
+  /* USER CODE BEGIN SPI1_Init 1 */
+
+  /* USER CODE END SPI1_Init 1 */
+  /* SPI1 parameter configuration*/
+  hspi1.Instance = SPI1;
+  hspi1.Init.Mode = SPI_MODE_MASTER;
+  hspi1.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi1.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi1.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi1.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi1.Init.NSS = SPI_NSS_SOFT;
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;
+  hspi1.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi1.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi1.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi1.Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(&hspi1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI1_Init 2 */
+
+  /* USER CODE END SPI1_Init 2 */
+
+}
+
+/**
+  * @brief UART4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_UART4_Init(void)
+{
+
+  /* USER CODE BEGIN UART4_Init 0 */
+
+  /* USER CODE END UART4_Init 0 */
+
+  /* USER CODE BEGIN UART4_Init 1 */
+
+  /* USER CODE END UART4_Init 1 */
+  huart4.Instance = UART4;
+  huart4.Init.BaudRate = 115200;
+  huart4.Init.WordLength = UART_WORDLENGTH_8B;
+  huart4.Init.StopBits = UART_STOPBITS_1;
+  huart4.Init.Parity = UART_PARITY_NONE;
+  huart4.Init.Mode = UART_MODE_TX_RX;
+  huart4.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart4.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN UART4_Init 2 */
+
+  /* USER CODE END UART4_Init 2 */
+
+}
+
 /** 
   * Enable DMA controller clock
   */
@@ -292,6 +374,7 @@ static void MX_DMA_Init(void)
 
   /* DMA controller clock enable */
   __HAL_RCC_DMA1_CLK_ENABLE();
+  __HAL_RCC_DMA2_CLK_ENABLE();
 
   /* DMA interrupt init */
   /* DMA1_Stream0_IRQn interrupt configuration */
@@ -306,6 +389,12 @@ static void MX_DMA_Init(void)
   /* DMA1_Stream7_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream7_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream7_IRQn);
+  /* DMA2_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+  /* DMA2_Stream3_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream3_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream3_IRQn);
 
 }
 
@@ -331,6 +420,9 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(OTG_FS_PowerSwitchOn_GPIO_Port, OTG_FS_PowerSwitchOn_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOA, SPI1_CE_Pin|SPI1_CSN_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, LD4_Pin|LD3_Pin|LD5_Pin|LD6_Pin 
@@ -370,6 +462,13 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
+  /*Configure GPIO pins : SPI1_CE_Pin SPI1_CSN_Pin */
+  GPIO_InitStruct.Pin = SPI1_CE_Pin|SPI1_CSN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
   /*Configure GPIO pin : I2S3_WS_Pin */
   GPIO_InitStruct.Pin = I2S3_WS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -377,14 +476,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   GPIO_InitStruct.Alternate = GPIO_AF6_SPI3;
   HAL_GPIO_Init(I2S3_WS_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : SPI1_SCK_Pin SPI1_MISO_Pin SPI1_MOSI_Pin */
-  GPIO_InitStruct.Pin = SPI1_SCK_Pin|SPI1_MISO_Pin|SPI1_MOSI_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  GPIO_InitStruct.Alternate = GPIO_AF5_SPI1;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : BOOT1_Pin */
   GPIO_InitStruct.Pin = BOOT1_Pin;
@@ -453,31 +544,52 @@ void StartDefaultTask(void const * argument)
 {
   /* USER CODE BEGIN 5 */
 	osDelay(1000);
+	
+	//NRF init
+	NRF24_begin(GPIOA, SPI1_CSN_Pin, SPI1_CE_Pin, hspi1);
+	nrf24_DebugUART_Init(huart4);
+	printRadioSettings();
+	NRF24_setAutoAck(true);
+	NRF24_setChannel(52);
+	NRF24_setPayloadSize(32);
+	NRF24_openReadingPipe(1, RxpipeAddrs);
+	NRF24_enableDynamicPayloads();
+	NRF24_enableAckPayload();
+	NRF24_startListening();
+		
+	osDelay(1000);
+	//Init RTC
 	uint8_t dc3231Addr = (uint8_t) 0xD0;
 	DS3231_sendData(hi2c2, dc3231Addr);    //Передадим адрес устройству
 	   while(HAL_I2C_GetState(&hi2c2) != HAL_I2C_STATE_READY) {
 	}
+	
 	//Read
 	//I2C_ReadCalendarData(hi2c2, dc3231Addr);    //—читаем 7 байт с устройства
-
-	
-//	setHour(22);
-//	setMinutes(50);
+//	setHour(0x20);
+//	setMinutes(0x24);
 //	setSeconds(00);
 //	DS3231_setDate(hi2c2, dc3231Addr);  //call to update set data
+	
   /* Infinite loop */
   for(;;)
   {
+	  //Read NRF
+	  if (NRF24_available())
+	  {
+		  NRF24_read(myRxData, 20);
+		  
+		  NRF24_writeAckPayload(1, myAckPayload, 32);
+		  HAL_UART_Transmit(&huart4, (uint8_t *)myRxData, 32 + 2, 10);
+	  }
+	  
+	  //Read RTC
 	  DS3231_sendData(hi2c2, dc3231Addr);   //Передадим адрес устройству
 		while(HAL_I2C_GetState(&hi2c2) != HAL_I2C_STATE_READY) {
 	  }
-	  //Read
 	  I2C_ReadCalendarData(hi2c2, dc3231Addr);   //—читаем 7 байт с устройства
-//	  char seconds[3] =;
-//	  char * minutes = readMinutes();
-//	  char * hours = readHours();
+	  sprintf(Time, "%s:%s:%s", readHours(), readMinutes(), readSeconds());
 	  
-	  sprintf(Time, "time = %s:%s:%s", readHours(), readMinutes(), readSeconds());
     osDelay(1000);
   }
   /* USER CODE END 5 */ 
