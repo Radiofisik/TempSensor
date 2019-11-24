@@ -118,11 +118,26 @@
     <Filter Include="Header files\STM32Cube HAL\SPI">
       <UniqueIdentifier>{805920c3-504c-4821-b48f-d36236e21c1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\CORE\Lib">
+      <UniqueIdentifier>{51529a6e-5391-440f-b30d-a0a13d66608e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\CORE\Code">
+      <UniqueIdentifier>{05ccf669-abae-4504-b46f-410cdd4899ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\CORE\Lib">
+      <UniqueIdentifier>{6cab483b-5674-4796-bef9-f48aa64f18e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\CORE\Code">
+      <UniqueIdentifier>{611e879e-002a-46af-914b-43e0993bde71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\CORE\Periph">
+      <UniqueIdentifier>{a9202449-ea31-4680-87a0-1555191e1734}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source files\CORE\Periph">
+      <UniqueIdentifier>{0b580c80-6e2c-42a5-b8ec-91f71fef8349}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Src\freertos.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\stm32f4xx_it.c">
       <Filter>Source files</Filter>
     </ClCompile>
@@ -360,26 +375,11 @@
     <None Include="stm32.xml">
       <Filter>VisualGDB settings</Filter>
     </None>
-    <ClCompile Include="Src\lcd_hd44780_i2c.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\MY_DHT22.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="Src\stm32f4xx_hal_timebase_tim.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="Display.c">
-      <Filter>Source files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sensor.c">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="Middlewares\Third_Party\FreeRTOS\Source\portable\MemMang\heap_1.c">
       <Filter>Source files\STM32Cube HAL\FREERTOS</Filter>
-    </ClCompile>
-    <ClCompile Include="Src\RTC.c">
-      <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c">
       <Filter>Source files\STM32Cube HAL\UART</Filter>
@@ -393,64 +393,82 @@
     <ClInclude Include="Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_spi.h">
       <Filter>Header files\STM32Cube HAL\SPI</Filter>
     </ClInclude>
-    <ClCompile Include="Src\MY_NRF24.c">
-      <Filter>Source files</Filter>
+    <ClCompile Include="Display.c">
+      <Filter>Source files\CORE\Code</Filter>
     </ClCompile>
-    <ClCompile Include="Src\gpio.c">
-      <Filter>Source files</Filter>
+    <ClCompile Include="Src\MY_DHT22.c">
+      <Filter>Source files\CORE\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\MY_NRF24.c">
+      <Filter>Source files\CORE\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\lcd_hd44780_i2c.c">
+      <Filter>Source files\CORE\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Sensor.c">
+      <Filter>Source files\CORE\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\RTC.c">
+      <Filter>Source files\CORE\Lib</Filter>
     </ClCompile>
     <ClCompile Include="Src\dma.c">
-      <Filter>Source files</Filter>
+      <Filter>Source files\CORE\Periph</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\freertos.c">
+      <Filter>Source files\CORE\Periph</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\gpio.c">
+      <Filter>Source files\CORE\Periph</Filter>
     </ClCompile>
     <ClCompile Include="Src\i2c.c">
-      <Filter>Source files</Filter>
+      <Filter>Source files\CORE\Periph</Filter>
     </ClCompile>
     <ClCompile Include="Src\spi.c">
-      <Filter>Source files</Filter>
+      <Filter>Source files\CORE\Periph</Filter>
     </ClCompile>
     <ClCompile Include="Src\sys.c">
-      <Filter>Source files</Filter>
+      <Filter>Source files\CORE\Periph</Filter>
     </ClCompile>
     <ClCompile Include="Src\usart.c">
-      <Filter>Source files</Filter>
+      <Filter>Source files\CORE\Periph</Filter>
     </ClCompile>
-    <ClInclude Include="Inc\gpio.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inc\dma.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inc\i2c.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inc\spi.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inc\sys.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inc\usart.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\MY_DHT22.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Inc\lcd_hd44780_i2c.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Display.h">
-      <Filter>Header files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sensor.h">
-      <Filter>Header files</Filter>
+      <Filter>Header files\CORE\Lib</Filter>
     </ClInclude>
     <ClInclude Include="Inc\MY_NRF24.h">
-      <Filter>Header files</Filter>
+      <Filter>Header files\CORE\Lib</Filter>
     </ClInclude>
     <ClInclude Include="Inc\nRF24L01.h">
-      <Filter>Header files</Filter>
+      <Filter>Header files\CORE\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\lcd_hd44780_i2c.h">
+      <Filter>Header files\CORE\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Sensor.h">
+      <Filter>Header files\CORE\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Display.h">
+      <Filter>Header files\CORE\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\dma.h">
+      <Filter>Header files\CORE\Periph</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\gpio.h">
+      <Filter>Header files\CORE\Periph</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\i2c.h">
+      <Filter>Header files\CORE\Periph</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\spi.h">
+      <Filter>Header files\CORE\Periph</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\sys.h">
+      <Filter>Header files\CORE\Periph</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\usart.h">
+      <Filter>Header files\CORE\Periph</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

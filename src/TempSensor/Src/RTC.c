@@ -1,4 +1,6 @@
 #include "RTC.h"
+#include "stdio.h"
+#include "string.h"
 //#include "i2c.h"
 //#include "usart.h"
 

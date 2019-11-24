@@ -1,4 +1,7 @@
 #include "Display.h"
+#include "math.h"
+#include "string.h"
+#include "stdio.h"
 
 static void DisplayInit(I2C_HandleTypeDef * i2c)
 {
