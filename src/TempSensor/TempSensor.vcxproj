@@ -77,6 +77,8 @@
   </ImportGroup>
   <ItemGroup>
     <ClCompile Include="Display.c" />
+    <ClCompile Include="NRF24.c" />
+    <ClCompile Include="RTCTask.c" />
     <ClCompile Include="Sensor.c" />
     <ClCompile Include="Src\freertos.c" />
     <ClCompile Include="Src\lcd_hd44780_i2c.c" />
@@ -116,6 +118,8 @@
     <ClCompile Include="Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_i2c_ex.c" />
     <ClInclude Include="Inc\MY_NRF24.h" />
     <ClInclude Include="Inc\nRF24L01.h" />
+    <ClInclude Include="NRF24.h" />
+    <ClInclude Include="RTCTask.h" />
     <ClInclude Include="Sensor.h" />
     <None Include="stm32.props" />
     <ClCompile Include="$(BSP_ROOT)\STM32F4xxxx\StartupFiles\startup_stm32f407xx.c" />

@@ -26,14 +26,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */     
-#include "Display.h"
-#include "MY_NRF24.h"
-//#include "MY_DHT22.h"
-#include "Sensor.h"
-#include "RTC.h"
 #include "i2c.h"
 #include "usart.h"
 #include "spi.h"
+
+#include "NRF24.h"
+#include "RTCTask.h"
+#include "Sensor.h"
+#include "Display.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,18 +56,20 @@
 /* USER CODE BEGIN Variables */
 osThreadId displayTaskHandle;
 osThreadId sensorTaskHandle;
+osThreadId rtcTaskHandle;
+osThreadId nrfTaskHandle;
+
+char Time[20] = "init";
+char myRxData[50];
+
 float Temp = 10;
 float Humidity = 10;
 
-char Time[20] = "init";
+//char myRxData[50];
 
 DisplayStruct ds;
 SensorStruct ss;
 
-
-uint64_t RxpipeAddrs = 0x11223344AA;
-char myRxData[50];
-char myAckPayload[32] = "ok";
 /* USER CODE END Variables */
 osThreadId defaultTaskHandle;
 
@@ -141,6 +144,12 @@ void MX_FREERTOS_Init(void) {
   osThreadDef(displayTask, StartDisplayTask, osPriorityNormal, 0, 256);
   displayTaskHandle = osThreadCreate(osThread(displayTask), (void*)&ds);
 
+  osThreadDef(rtcTask, StartRTCTask, osPriorityNormal, 0, 256);
+  rtcTaskHandle = osThreadCreate(osThread(rtcTask), (void*)Time);
+
+  osThreadDef(nrfTask, StartNRFTask, osPriorityNormal, 0, 256);
+  nrfTaskHandle = osThreadCreate(osThread(nrfTask), (void*)myRxData);
+
   /* USER CODE END RTOS_THREADS */
 
 }
@@ -158,51 +167,9 @@ void StartDefaultTask(void const * argument)
 	  /* USER CODE BEGIN 5 */
 	osDelay(1000);
 
-	//NRF init
-	NRF24_begin(GPIOA, SPI1_CSN_Pin, SPI1_CE_Pin, hspi1);
-	nrf24_DebugUART_Init(huart4);
-	printRadioSettings();
-	NRF24_setAutoAck(true);
-	NRF24_setChannel(52);
-	NRF24_setPayloadSize(32);
-	NRF24_openReadingPipe(1, RxpipeAddrs);
-	NRF24_enableDynamicPayloads();
-	NRF24_enableAckPayload();
-	NRF24_startListening();
-
-	osDelay(1000);
-	//Init RTC
-	uint8_t dc3231Addr = (uint8_t)0xD0;
-	DS3231_sendData(hi2c2, dc3231Addr); 
-	while (HAL_I2C_GetState(&hi2c2) != HAL_I2C_STATE_READY) {
-	}
-
-	//Read
-	//I2C_ReadCalendarData(hi2c2, dc3231Addr);   
-	//    setHour(0x20);
-//    setMinutes(0x24);
-//    setSeconds(00);
-//    DS3231_setDate(hi2c2, dc3231Addr);  //call to update set data
-
   /* Infinite loop */
 	for (;;)
 	{
-		//Read NRF
-		if (NRF24_available())
-		{
-			NRF24_read(myRxData, 20);
-
-			NRF24_writeAckPayload(1, myAckPayload, 32);
-			HAL_UART_Transmit(&huart4, (uint8_t *)myRxData, 32 + 2, 10);
-		}
-
-		//Read RTC
-		DS3231_sendData(hi2c2, dc3231Addr);  
-		while (HAL_I2C_GetState(&hi2c2) != HAL_I2C_STATE_READY) {
-		}
-		I2C_ReadCalendarData(hi2c2, dc3231Addr);  
-		sprintf(Time, "%s:%s:%s", readHours(), readMinutes(), readSeconds());
-
 		osDelay(1000);
 	}
 

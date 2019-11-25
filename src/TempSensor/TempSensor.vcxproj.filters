@@ -432,6 +432,12 @@
     <ClCompile Include="Src\usart.c">
       <Filter>Source files\CORE\Periph</Filter>
     </ClCompile>
+    <ClCompile Include="NRF24.c">
+      <Filter>Source files\CORE\Code</Filter>
+    </ClCompile>
+    <ClCompile Include="RTCTask.c">
+      <Filter>Source files\CORE\Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Inc\MY_DHT22.h">
@@ -469,6 +475,12 @@
     </ClInclude>
     <ClInclude Include="Inc\usart.h">
       <Filter>Header files\CORE\Periph</Filter>
+    </ClInclude>
+    <ClInclude Include="NRF24.h">
+      <Filter>Header files\CORE\Code</Filter>
+    </ClInclude>
+    <ClInclude Include="RTCTask.h">
+      <Filter>Header files\CORE\Code</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

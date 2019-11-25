@@ -28,7 +28,7 @@ static void PrintTemp(float temp)
 	char numstr[5];
 	char str[20];
 	ToString(numstr, temp);
-	sprintf(str, "T = %s", numstr);
+	sprintf(str, "Ti = %s", numstr);
 	
 	lcdSetCursorPosition(0, 1);	
 	lcdPrintStr((uint8_t *)str, strlen(str));
@@ -39,7 +39,7 @@ static void PrintHumidity(float humidity)
 	char numstr[5];
 	char str[20];
 	ToString(numstr, humidity);
-	sprintf(str, "H = %s", numstr);
+	sprintf(str, "Hi = %s", numstr);
 				
 	lcdSetCursorPosition(10, 1);
 	lcdPrintStr((uint8_t *)str, strlen(str));
