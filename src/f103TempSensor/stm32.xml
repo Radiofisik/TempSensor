@@ -48,7 +48,7 @@
     <AllDependencies>
       <ProjectDependency>
         <RelativePath>f103TempSensor.gpdsc</RelativePath>
-        <Timestamp>132190115060260967</Timestamp>
+        <Timestamp>132192684632974164</Timestamp>
       </ProjectDependency>
     </AllDependencies>
     <RootDirectory>
@@ -127,17 +127,6 @@
               </Files>
             </VirtualDirectorySnapshot>
             <VirtualDirectorySnapshot>
-              <Name>SPI</Name>
-              <Files>
-                <VirtualFileSnapshot>
-                  <RelativePath>Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h</RelativePath>
-                </VirtualFileSnapshot>
-                <VirtualFileSnapshot>
-                  <RelativePath>Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_spi.c</RelativePath>
-                </VirtualFileSnapshot>
-              </Files>
-            </VirtualDirectorySnapshot>
-            <VirtualDirectorySnapshot>
               <Name>FLASH</Name>
               <Files>
                 <VirtualFileSnapshot>
@@ -155,6 +144,17 @@
               </Files>
             </VirtualDirectorySnapshot>
             <VirtualDirectorySnapshot>
+              <Name>SPI</Name>
+              <Files>
+                <VirtualFileSnapshot>
+                  <RelativePath>Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_spi.c</RelativePath>
+                </VirtualFileSnapshot>
+              </Files>
+            </VirtualDirectorySnapshot>
+            <VirtualDirectorySnapshot>
               <Name>GPIO</Name>
               <Files>
                 <VirtualFileSnapshot>
@@ -168,6 +168,17 @@
                 </VirtualFileSnapshot>
                 <VirtualFileSnapshot>
                   <RelativePath>Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_gpio_ex.c</RelativePath>
+                </VirtualFileSnapshot>
+              </Files>
+            </VirtualDirectorySnapshot>
+            <VirtualDirectorySnapshot>
+              <Name>IWDG</Name>
+              <Files>
+                <VirtualFileSnapshot>
+                  <RelativePath>Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_iwdg.h</RelativePath>
+                </VirtualFileSnapshot>
+                <VirtualFileSnapshot>
+                  <RelativePath>Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_iwdg.c</RelativePath>
                 </VirtualFileSnapshot>
               </Files>
             </VirtualDirectorySnapshot>
@@ -242,6 +253,9 @@
           <RelativePath>Core\Inc\dma.h</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
+          <RelativePath>Core\Inc\iwdg.h</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
           <RelativePath>Core\Inc\spi.h</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
@@ -264,6 +278,9 @@
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Core\Src\dma.c</RelativePath>
+        </VirtualFileSnapshot>
+        <VirtualFileSnapshot>
+          <RelativePath>Core\Src\iwdg.c</RelativePath>
         </VirtualFileSnapshot>
         <VirtualFileSnapshot>
           <RelativePath>Core\Src\spi.c</RelativePath>
@@ -289,11 +306,11 @@
       <ImportedConfiguration>
         <Settings>
           <IncludeDirectories>
-            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\cubeadv\f103TempSensor\Core\Inc</string>
-            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\cubeadv\f103TempSensor\Drivers\CMSIS\Device\ST\STM32F1xx\Include</string>
-            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\cubeadv\f103TempSensor\Drivers\STM32F1xx_HAL_Driver\Inc</string>
-            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\cubeadv\f103TempSensor\Drivers\STM32F1xx_HAL_Driver\Src</string>
-            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\cubeadv\f103TempSensor\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy</string>
+            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\TempSensor\src\f103TempSensor\Core\Inc</string>
+            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\TempSensor\src\f103TempSensor\Drivers\CMSIS\Device\ST\STM32F1xx\Include</string>
+            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\TempSensor\src\f103TempSensor\Drivers\STM32F1xx_HAL_Driver\Inc</string>
+            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\TempSensor\src\f103TempSensor\Drivers\STM32F1xx_HAL_Driver\Src</string>
+            <string>D:\Seafile\Dropbox\HOME\PROJECTS\STM\VsProjects\TempSensor\src\f103TempSensor\Drivers\STM32F1xx_HAL_Driver\Inc\Legacy</string>
           </IncludeDirectories>
           <PreprocessorMacros>
             <string>$$com.sysprogs.bspoptions.primary_memory$$_layout</string>

@@ -100,6 +100,12 @@
     <Filter Include="Header files\STM32Cube HAL\SPI">
       <UniqueIdentifier>{815eb21d-2997-4e54-8ff6-ab608c12bebd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source files\STM32Cube HAL\IWDG">
+      <UniqueIdentifier>{b4a7ba7c-75c9-4162-9a13-f8bde8ff7d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header files\STM32Cube HAL\IWDG">
+      <UniqueIdentifier>{37aa7ea7-ad36-4151-ad73-f7bea91d0142}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\Src\stm32f1xx_it.c">
@@ -279,6 +285,18 @@
     <ClCompile Include="Core\Src\MY_DHT22.c">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Src\iwdg.c">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_iwdg.c">
+      <Filter>Source files\STM32Cube HAL\IWDG</Filter>
+    </ClCompile>
+    <ClInclude Include="Core\Inc\iwdg.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_iwdg.h">
+      <Filter>Header files\STM32Cube HAL\IWDG</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core\Inc\nRF24L01.h">

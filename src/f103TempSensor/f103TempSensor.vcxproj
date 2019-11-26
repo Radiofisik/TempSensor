@@ -139,5 +139,9 @@
     <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_spi.c" />
     <ClInclude Include="Core\Inc\spi.h" />
     <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_spi.h" />
+    <ClCompile Include="Core\Src\iwdg.c" />
+    <ClCompile Include="Drivers\STM32F1xx_HAL_Driver\Src\stm32f1xx_hal_iwdg.c" />
+    <ClInclude Include="Core\Inc\iwdg.h" />
+    <ClInclude Include="Drivers\STM32F1xx_HAL_Driver\Inc\stm32f1xx_hal_iwdg.h" />
   </ItemGroup>
 </Project>
